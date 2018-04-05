@@ -3,14 +3,18 @@ require 'csv'
 require 'date'
 
 def latest(name)
-  files = Dir.glob("./workspace/*#{name}*.txt")
+  files = Dir["#{ ENV["HOME"] }/workspace/*#{name}*.txt"]
+
+  files.sort_by! do |file|
+    last_date = /\d+-\d+-\d+_[[:alpha:]]+\.txt$/.match file
+    last_date = last_date.to_s.match /\d+-\d+-\d+/
+
+    date = DateTime.parse(last_date.to_s)
+    date
+  end
 
   throw RuntimeError if files.empty?
 
-  files.sort_by! do |file|
-    last_date = file.scan(/\d+-\d+-\d+/).last
-    DateTime.parse(last_date.to_s)
-  end
   files.last
 end
 
@@ -99,25 +103,25 @@ class Modifier
 		result
 	end
 
-  def combine_values(hash)
-		# LAST_VALUE_WINS.each do |key|
-		# 	hash[key] = hash[key].last
-		# end
-		# LAST_REAL_VALUE_WINS.each do |key|
-		# 	hash[key] = hash[key].select {|v| not (v.nil? or v == 0 or v == '0' or v == '')}.last
-		# end
-		# INT_VALUES.each do |key|
-		# 	hash[key] = hash[key][0].to_s
-		# end
-		# FLOAT_VALUES.each do |key|
-		# 	hash[key] = hash[key][0].from_german_to_f.to_german_s
-		# end
-		# ['number of commissions'].each do |key|
-		# 	hash[key] = (@cancellation_factor * hash[key][0].from_german_to_f).to_german_s
-		# end
-		# ['Commission Value', 'ACCOUNT - Commission Value', 'CAMPAIGN - Commission Value', 'BRAND - Commission Value', 'BRAND+CATEGORY - Commission Value', 'ADGROUP - Commission Value', 'KEYWORD - Commission Value'].each do |key|
-		# 	hash[key] = (@cancellation_factor * @saleamount_factor * hash[key][0].from_german_to_f).to_german_s
-		# end
+	def combine_values(hash)
+		LAST_VALUE_WINS.each do |key|
+			hash[key] = hash[key].last
+		end
+		LAST_REAL_VALUE_WINS.each do |key|
+			hash[key] = hash[key].select {|v| not (v.nil? or v == 0 or v == '0' or v == '')}.last
+		end
+		INT_VALUES.each do |key|
+			hash[key] = hash[key][0].to_s
+		end
+		FLOAT_VALUES.each do |key|
+			hash[key] = hash[key][0].from_german_to_f.to_german_s
+		end
+		['number of commissions'].each do |key|
+			hash[key] = (@cancellation_factor * hash[key][0].from_german_to_f).to_german_s
+		end
+		['Commission Value', 'ACCOUNT - Commission Value', 'CAMPAIGN - Commission Value', 'BRAND - Commission Value', 'BRAND+CATEGORY - Commission Value', 'ADGROUP - Commission Value', 'KEYWORD - Commission Value'].each do |key|
+			hash[key] = (@cancellation_factor * @saleamount_factor * hash[key][0].from_german_to_f).to_german_s
+		end
 		hash
 	end
 
@@ -175,7 +179,6 @@ class Modifier
 end
 
 modified = input = latest('project_2012-07-27_2012-10-10_performancedata')
-p modified
 modification_factor = 1
 cancellaction_factor = 0.4
 modifier = Modifier.new(modification_factor, cancellaction_factor)
