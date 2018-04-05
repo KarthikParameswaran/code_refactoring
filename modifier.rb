@@ -4,6 +4,7 @@ require 'date'
 
 def latest(name)
   files = Dir.glob("./workspace/*#{name}*.txt")
+             .select { |v| /\d+-\d+-\d+_[[:alpha:]]+\.txt$/.match v }
 
   throw RuntimeError if files.empty?
 
@@ -43,7 +44,6 @@ class Modifier
 
 	def modify(output, input)
 		input = sort(input)
-
 		input_enumerator = lazy_read(input)
 
 		combiner = Combiner.new do |value|
@@ -66,7 +66,7 @@ class Modifier
     file_index = 0
     file_name = output.gsub('.txt', '')
     while not done do
-		  CSV.open(file_name + "_#{file_index}.txt", "wb", { :col_sep => "\t", :headers => :first_row, :row_sep => "\r\n" }) do |csv|
+		  CSV.open(file_name + "_#{file_index}.txt", "wb", { :col_sep => ", ", :headers => :first_row, :row_sep => "\r\n" }) do |csv|
 			  headers_written = false
         line_count = 0
 			  while line_count < LINES_PER_FILE
@@ -100,23 +100,23 @@ class Modifier
 	end
 
   def combine_values(hash)
-		# LAST_VALUE_WINS.each do |key|
-		# 	hash[key] = hash[key].last
-		# end
-		# LAST_REAL_VALUE_WINS.each do |key|
-		# 	hash[key] = hash[key].select {|v| not (v.nil? or v == 0 or v == '0' or v == '')}.last
-		# end
-		# INT_VALUES.each do |key|
-		# 	hash[key] = hash[key][0].to_s
-		# end
-		# FLOAT_VALUES.each do |key|
-		# 	hash[key] = hash[key][0].from_german_to_f.to_german_s
-		# end
+		LAST_VALUE_WINS.each do |key|
+			hash[key] = hash[key].last
+		end
+		LAST_REAL_VALUE_WINS.each do |key|
+			hash[key] = hash[key].select {|v| not (v.nil? or v == 0 or v == '0' or v == '')}.last
+		end
+		INT_VALUES.each do |key|
+			hash[key] = hash[key][0]
+		end
+		FLOAT_VALUES.each do |key|
+			hash[key] = hash[key][0].nil? ? nil : hash[key][0].from_german_to_f.to_german_s
+		end
 		# ['number of commissions'].each do |key|
-		# 	hash[key] = (@cancellation_factor * hash[key][0].from_german_to_f).to_german_s
+		# 	hash[key] = hash[key][0].nil? ? '' : (@cancellation_factor * hash[key][0].from_german_to_f).to_german_s
 		# end
 		# ['Commission Value', 'ACCOUNT - Commission Value', 'CAMPAIGN - Commission Value', 'BRAND - Commission Value', 'BRAND+CATEGORY - Commission Value', 'ADGROUP - Commission Value', 'KEYWORD - Commission Value'].each do |key|
-		# 	hash[key] = (@cancellation_factor * @saleamount_factor * hash[key][0].from_german_to_f).to_german_s
+		# 	hash[key] = hash[key][0].nil? ? '' : (@cancellation_factor * @saleamount_factor * hash[key][0].from_german_to_f).to_german_s
 		# end
 		hash
 	end
@@ -139,7 +139,7 @@ class Modifier
 		result
 	end
 
-	DEFAULT_CSV_OPTIONS = { :col_sep => "\t", :headers => :first_row }
+	DEFAULT_CSV_OPTIONS = { :col_sep => ", ", :headers => :first_row }
 
 	def parse(file)
 		CSV.read(file, DEFAULT_CSV_OPTIONS)
@@ -154,7 +154,7 @@ class Modifier
 	end
 
 	def write(content, headers, output)
-		CSV.open(output, "wb", { :col_sep => "\t", :headers => :first_row, :row_sep => "\r\n" }) do |csv|
+		CSV.open(output, "wb", { :col_sep => ", ", :headers => :first_row, :row_sep => "\r\n" }) do |csv|
 			csv << headers
 			content.each do |row|
 				csv << row
@@ -175,7 +175,6 @@ class Modifier
 end
 
 modified = input = latest('project_2012-07-27_2012-10-10_performancedata')
-p modified
 modification_factor = 1
 cancellaction_factor = 0.4
 modifier = Modifier.new(modification_factor, cancellaction_factor)
