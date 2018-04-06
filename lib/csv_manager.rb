@@ -1,4 +1,6 @@
-# Manage CSV Operations
+# 
+# Manage CSV Operation
+#
 class CsvManager
   DEFAULT_CSV_OPTIONS = { col_sep: ', ', headers: :first_row }.freeze
   class << self
@@ -35,10 +37,18 @@ class CsvManager
     end
 
     def merge_records(merger, output)
-      record = merger.next
-      headers = record.keys
       contents = []
-      merger.map { |e| contents << e }
+      flag = true
+      while flag
+        begin
+          record   = merger.next
+          headers  = record.keys if headers.nil?
+          contents << record
+        rescue StopIteration
+          flag = false
+          break
+        end
+      end
       file_index = 0
       file_name = output.gsub('.txt', '')
       output_file = file_name + "_#{file_index}.txt"

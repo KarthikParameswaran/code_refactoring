@@ -1,6 +1,7 @@
 require_relative 'lib/combiner'
 require_relative 'lib/csv_manager'
 require_relative 'lib/file_manager'
+require_relative 'lib/hash_handler'
 Dir[Dir.pwd + 'lib/overrides/*.rb'].each { |f| require_relative f }
 require 'csv'
 require 'date'
@@ -37,29 +38,26 @@ class Modifier
     combiner = Combiner.new do |value|
       value[KEYWORD_UNIQUE_ID]
     end.combine(input_enumerator)
-
-    merger = Enumerator.new do |yielder|
-      while true
-        begin
-          list_of_rows = combiner.next
-          merged = combine_hashes(list_of_rows)
-          yielder.yield(combine_values(merged))
-        rescue StopIteration
-          break
-        end
-      end
-    end
+    merger = record_merger(combiner)
     CsvManager.merge_records(merger, output)
   end
 
   private
 
-  def combine(merged)
-    result = []
-    merged.each do |_, hash|
-      result << combine_values(hash)
+  def record_merger(combiner)
+    Enumerator.new do |yielder|
+      flag = true
+      while flag
+        begin
+          list_of_rows = combiner.next
+          merged = combine_hashes(list_of_rows)
+          yielder.yield(HashHandler.new(merged).parse)
+        rescue StopIteration
+          flag = false
+          break
+        end
+      end
     end
-    result
   end
 
   def combine_values(hash)
@@ -85,32 +83,12 @@ class Modifier
   end
 
   def combine_hashes(list_of_rows)
-    keys = []
+    result = {}
     list_of_rows.each do |row|
       next if row.nil?
-      row.headers.each do |key|
-        keys << key
-      end
-    end
-    result = {}
-    keys.each do |key|
-      result[key] = []
-      list_of_rows.each do |row|
-        result[key] << (row.nil? ? nil : row[key])
-      end
+      row.to_hash.map { |i, v| result[i] = [v].compact }
     end
     result
-  end
-
-  public
-  def sort(file)
-    output = "#{file}.sorted"
-    content_as_table = CsvManager.parse(file)
-    headers = content_as_table.headers
-    index_of_key = headers.index('Clicks')
-    content = content_as_table.sort_by { |a| -a[index_of_key].to_i }
-    CsvManager.write(content, headers, output)
-    return output
   end
 end
 
