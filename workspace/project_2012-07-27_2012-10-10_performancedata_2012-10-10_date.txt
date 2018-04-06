@@ -1,4 +1,4 @@
-Keyword Unique ID, Clicks, Account ID, Account Name, Campaign, Ad Group, Keyword, Keyword Type, Subid, Paused, Max CPC, ACCOUNT, CAMPAIGN, BRAND, BRAND+CATEGORY, ADGROUP, KEYWORD, Last Avg CPC, Last Avg Pos, Impressions, ACCOUNT - Clicks, CAMPAIGN - Clicks, BRAND - Clicks, BRAND+CATEGORY - Clicks, ADGROUP - Clicks, KEYWORD - Clicks, Avg CPC, CTR, Est EPC, newBid, Costs, Avg Pos
+Keyword Unique ID, Clicks, Account ID, Account Name, Campaign, Ad Group, Keyword, Keyword Type, Subid, Paused, Max CPC, ACCOUNT, CAMPAIGN, BRAND, BRAND+CATEGORY, ADGROUP, KEYWORD, Last Avg CPC, Last Avg Pos, Impressions, ACCOUNT - Clicks, CAMPAIGN - Clicks, BRAND - Clicks, BRAND+CATEGORY - Clicks, ADGROUP - Clicks, KEYWORD - Clicks, Avg CPC, CTR, Est EPC, newBid, Costs, Avg Pos, number of commissions, Commission Value, ACCOUNT - Commission Value, CAMPAIGN - Commission Value, BRAND - Commission Value, BRAND+CATEGORY - Commission Value, ADGROUP - Commission Value, KEYWORD - Commission Value
 101, 234
 102, 432
 105, 123
