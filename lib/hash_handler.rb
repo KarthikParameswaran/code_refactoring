@@ -59,6 +59,22 @@ class HashHandler
     result
   end
 
+  def self.record_merger(combiner)
+    Enumerator.new do |yielder|
+      flag = true
+      while flag
+        begin
+          list_of_rows = combiner.next
+          merged = HashHandler.combine_hashes(list_of_rows)
+          yielder.yield(HashHandler.new(merged).parse)
+        rescue StopIteration
+          flag = false
+          break
+        end
+      end
+    end
+  end
+
   private
 
   # Apply last value checks

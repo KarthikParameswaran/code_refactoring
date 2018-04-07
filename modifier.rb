@@ -5,7 +5,6 @@ require 'date'
 # Modifier class for parsing performance record and generate sorted and audited results
 class Modifier
   KEYWORD_UNIQUE_ID = 'Keyword Unique ID'.freeze
-  LINES_PER_FILE    = 120000
 
   def initialize(saleamount_factor, cancellation_factor)
     @saleamount_factor = saleamount_factor
@@ -19,26 +18,8 @@ class Modifier
     combiner = Combiner.new do |value|
       value[KEYWORD_UNIQUE_ID]
     end.combine(input_enumerator)
-    merger = record_merger(combiner)
+    merger = HashHandler.record_merger(combiner)
     CsvManager.merge_records(merger, output)
-  end
-
-  private
-
-  def record_merger(combiner)
-    Enumerator.new do |yielder|
-      flag = true
-      while flag
-        begin
-          list_of_rows = combiner.next
-          merged = HashHandler.combine_hashes(list_of_rows)
-          yielder.yield(HashHandler.new(merged).parse)
-        rescue StopIteration
-          flag = false
-          break
-        end
-      end
-    end
   end
 end
 

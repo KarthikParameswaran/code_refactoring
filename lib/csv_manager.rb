@@ -49,9 +49,8 @@ class CsvManager
           break
         end
       end
-      file_index = 0
       file_name = output.gsub('.txt', '')
-      output_file = file_name + "_#{file_index}.txt"
+      output_file = file_name + '.txt.audited'
       write(contents, headers, output_file)
     end
   end
