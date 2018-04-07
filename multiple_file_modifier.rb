@@ -18,7 +18,8 @@ class MultipleFileModifier
     combiner = Combiner.new do |value|
       value[KEYWORD_UNIQUE_ID]
     end.combine(input_enumerator)
-    merger = HashHandler.record_merger(combiner)
+    merger = HashHandler.new(@saleamount_factor, @cancellation_factor)
+                        .record_merger(combiner)
     CsvManager.merge_records(merger, output)
   end
 end

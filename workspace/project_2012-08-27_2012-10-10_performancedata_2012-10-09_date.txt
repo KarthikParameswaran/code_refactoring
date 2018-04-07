@@ -1,5 +1,4 @@
-Keyword Unique ID | Clicks | Account ID | Account Name | Campaign | Ad Group | Keyword | Keyword Type | Subid | Paused | Max CPC | ACCOUNT | CAMPAIGN | BRAND | BRAND+CATEGORY | ADGROUP | KEYWORD | Last Avg CPC | Last Avg Pos | Impressions | ACCOUNT - Clicks | CAMPAIGN - Clicks | BRAND - Clicks | BRAND+CATEGORY - Clicks | ADGROUP - Clicks | KEYWORD - Clicks | Avg CPC | CTR | Est EPC | newBid | Costs | Avg Pos
-101 | 234
-102 | 432
-105 | 123
-106 | 326
+Keyword Unique ID | Clicks | Account ID | Account Name | Campaign | Ad Group | Keyword | Keyword Type | Subid | Paused | Max CPC | ACCOUNT | CAMPAIGN | BRAND | BRAND+CATEGORY | ADGROUP | KEYWORD | Last Avg CPC | Last Avg Pos | Impressions | ACCOUNT - Clicks | CAMPAIGN - Clicks | BRAND - Clicks | BRAND+CATEGORY - Clicks | ADGROUP - Clicks | KEYWORD - Clicks | Avg CPC | CTR | Est EPC | newBid | Costs | Avg Pos | number of commissions | Commission Value | ACCOUNT - Commission Value | CAMPAIGN - Commission Value | BRAND - Commission Value | BRAND+CATEGORY - Commission Value | ADGROUP - Commission Value | KEYWORD - Commission Value
+332 | 985 | A123 | AccName1 | Camp1 | AdGrp 1 | Key1 | KeyType1 | 1287 | Yes | 1237 | Accnt1 | CampL1 | Brand1 | BrandCat1 | AdgrpL2 | Keyword1 | 1234 | 8786 | 33 | 88 | 94 | 975 |  | 24 | 224 | 26475 | 25 | 2444 | 97 |  | 878 | 34.44 | 1424 | 355 |  |  |  | 8786 | 88
+426 | 159 | B237 | AccName2 | Camp2 | AdGrp 2 | Key2 | KeyType2 | 2234 | No | 1227 | Accnt2 | CampL2 | Brand2 | BrandCat2 | AdgrpL3 | Keyword2 | 1233 | 9786 | 5464 | 824 | 827 | 856 | 245 |  | 244 |  |  | 557 | 883 | 244 | 244 | 25.44 | 244 |  | 244 |  | 38 |  | 97
+496 | 668 | Q738 | AccName3 | Camp3 | AdGrp 3 | Key3 | KeyType3 | 2346 | Yes | 1237 | Accnt3 | CampL3 | Brand3 | BrandCat3 | AdgrpL4 | Keyword1 | 8775 | 8677 | 33 | 875 | 746 | 8264 | 42 | 25 | 123 | 124522 | 224 | 46 | 9274 | 24 |  | 24525.33 | 244 | 35 |  | 24 |  |  | 24

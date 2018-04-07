@@ -40,8 +40,12 @@ class CsvManager
       @headers = []
       @content = []
       files.each do |file|
-        read_file_content(file, key)
+        @content_as_table = parse(file)
+        @headers = @content_as_table.headers if @headers.empty?
+        @index_of_key = @headers.index(key)
+        @content += @content_as_table.to_a.drop(1)
       end
+      @content = @content.sort_by { |a| -a[@index_of_key].to_i }
       write(@content, @headers, output_file)
       output_file
     end
