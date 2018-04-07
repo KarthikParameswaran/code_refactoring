@@ -3,7 +3,8 @@ require 'date'
 Dir['./lib/*.rb', './lib/overrides/*.rb'].each { |f| require f }
 
 # MultipleFileModifier class for parsing performance record and generate sorted and audited results
-# Inputting multiple files to see the result
+# Inputting multiple files
+# Outputs sorted and audited files with combined results from multtiple files
 class MultipleFileModifier
   KEYWORD_UNIQUE_ID = 'Keyword Unique ID'.freeze
 

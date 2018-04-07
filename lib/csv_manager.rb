@@ -4,10 +4,12 @@
 class CsvManager
   DEFAULT_CSV_OPTIONS = { col_sep: ' | ', headers: :first_row }.freeze
   class << self
+    # Parse data from file
     def parse(file)
       CSV.read(file, DEFAULT_CSV_OPTIONS)
     end
 
+    # Read rows from file and generate enumerator
     def lazy_read(file)
       Enumerator.new do |yielder|
         CSV.foreach(file, DEFAULT_CSV_OPTIONS) do |row|
@@ -16,6 +18,7 @@ class CsvManager
       end
     end
 
+    # Save file
     def write(content, headers, output)
       csv_write_options = { col_sep: ' | ', headers: :first_row, row_sep: "\r\n" }
       CSV.open(output, 'wb', csv_write_options) do |csv|
@@ -26,6 +29,7 @@ class CsvManager
       end
     end
 
+    # Sort csv content
     def sort(file, key)
       output = "#{file}.sorted"
       @headers = []
@@ -35,6 +39,7 @@ class CsvManager
       output
     end
 
+    # Join multiple files and sort result
     def sort_multiple(output, files, key)
       output_file = "#{output}.sorted"
       @headers = []
@@ -50,6 +55,7 @@ class CsvManager
       output_file
     end
 
+    # Save audited file results
     def merge_records(merger, output)
       contents = []
       flag = true

@@ -62,6 +62,7 @@ class HashHandler
     result
   end
 
+  # Parse through the records for updating vales and stores in an enumerator
   def record_merger(combiner)
     Enumerator.new do |yielder|
       flag = true
