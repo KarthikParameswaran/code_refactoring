@@ -5,7 +5,7 @@ class FileManager
       fetch_files(name)
       @files.sort_by! do |file|
         last_date = file.scan(/\d+-\d+-\d+/).last
-        DateTime.parse(last_date.to_s)
+        Date.parse(last_date.to_s)
       end
       @files.last
     end

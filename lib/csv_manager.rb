@@ -2,7 +2,7 @@
 # Manage CSV Operation
 #
 class CsvManager
-  DEFAULT_CSV_OPTIONS = { col_sep: ', ', headers: :first_row }.freeze
+  DEFAULT_CSV_OPTIONS = { col_sep: ' | ', headers: :first_row }.freeze
   class << self
     def parse(file)
       CSV.read(file, DEFAULT_CSV_OPTIONS)
@@ -17,7 +17,7 @@ class CsvManager
     end
 
     def write(content, headers, output)
-      csv_write_options = { col_sep: ', ', headers: :first_row, row_sep: "\r\n" }
+      csv_write_options = { col_sep: ' | ', headers: :first_row, row_sep: "\r\n" }
       CSV.open(output, 'wb', csv_write_options) do |csv|
         csv << headers
         content.each do |row|
