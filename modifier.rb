@@ -1,6 +1,6 @@
-Dir['./lib/*.rb', './lib/overrides/*.rb'].each {| f| require f }
 require 'csv'
 require 'date'
+Dir['./lib/*.rb', './lib/overrides/*.rb'].each { |f| require f }
 
 # Modifier class for parsing performance record and generate sorted and audited results
 class Modifier

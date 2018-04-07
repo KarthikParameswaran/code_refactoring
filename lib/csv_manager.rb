@@ -1,4 +1,4 @@
-# 
+#
 # Manage CSV Operation
 #
 class CsvManager
@@ -28,12 +28,22 @@ class CsvManager
 
     def sort(file, key)
       output = "#{file}.sorted"
-      content_as_table = parse(file)
-      headers = content_as_table.headers
-      index_of_key = headers.index(key)
-      content = content_as_table.sort_by { |a| -a[index_of_key].to_i }
-      write(content, headers, output)
+      @headers = []
+      @content = []
+      read_file_content(file, key)
+      write(@content, @headers, output)
       output
+    end
+
+    def sort_multiple(output, files, key)
+      output_file = "#{output}.sorted"
+      @headers = []
+      @content = []
+      files.each do |file|
+        read_file_content(file, key)
+      end
+      write(@content, @headers, output_file)
+      output_file
     end
 
     def merge_records(merger, output)
@@ -52,6 +62,16 @@ class CsvManager
       file_name = output.gsub('.txt', '')
       output_file = file_name + '.txt.audited'
       write(contents, headers, output_file)
+    end
+
+    private
+
+    # Shared method for reading file content
+    def read_file_content(file, key)
+      @content_as_table = parse(file)
+      @headers = @content_as_table.headers if @headers.empty?
+      index_of_key = @headers.index(key)
+      @content += @content_as_table.sort_by { |a| -a[index_of_key].to_i }
     end
   end
 end

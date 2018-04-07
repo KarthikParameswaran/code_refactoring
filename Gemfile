@@ -1,5 +1,5 @@
 # Gemfile
-source "https://rubygems.org"
+source 'https://rubygems.org'
 ruby '2.5.1'
 
 gem 'rspec'

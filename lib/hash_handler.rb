@@ -33,19 +33,20 @@ class HashHandler
 
   # Apply changes to the results
   def format_results(key, array_value)
-    case 
-    when LAST_VALUE_WINS.include?(key)
+    if LAST_VALUE_WINS.include?(key)
       array_value.map { |e| e.nil? ? nil : e }.to_readable_value
-    when LAST_REAL_VALUE_WINS.include?(key)
+    elsif LAST_REAL_VALUE_WINS.include?(key)
       last_value_handler(array_value)
-    when INT_VALUES.include?(key)
+    elsif INT_VALUES.include?(key)
       array_value.map { |e| e.nil? ? nil : e.to_s }.to_readable_value
-    when FLOAT_VALUES.include?(key)
+    elsif FLOAT_VALUES.include?(key)
       float_value_handler(array_value)
-    when NUMBER_OF_COMMISSIONS.include?(key)
+    elsif NUMBER_OF_COMMISSIONS.include?(key)
       array_value.map { |e| e.nil? ? nil : e.to_german_s }.to_readable_value
-    when COMMISION_VALUES.include?(key)
+    elsif COMMISION_VALUES.include?(key)
       commision_value_handler(array_value)
+    else
+      array_value.map { |e| e.nil? ? nil : e }.to_readable_value
     end
   end
 
